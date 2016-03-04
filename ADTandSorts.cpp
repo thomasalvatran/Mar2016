@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <vector>
 #include <algorithm>
+#include <array>
 using namespace std;
 
 int rand_int(int a, int b)
@@ -143,7 +144,7 @@ void mergeSort(int a[], int l, int r)
    merge(a, l, m, r);
 }
 
-/**********************Queue ADT Array *****************************/
+/**********************Queue ADT Arrayay *****************************/
 #ifdef INCLUDE //dummy
     #include <iostream>
     #include <stdio.h>
@@ -168,7 +169,7 @@ int fibonacci (int n)
 }
 
 const int SIZE = 5;
-int array[SIZE];
+int Array[SIZE];
 
 int rear = 0, front = 0;
 
@@ -188,7 +189,7 @@ void enqueueArray(int data)
         return;
     }
     rear = (rear + 1) % SIZE;
-    array[rear] = data;
+    Array[rear] = data;
 }
 void dequeueArray()
 {
@@ -205,7 +206,7 @@ void printArray()
     for (int i = 1; i < count; i++)
     {
         int index = (front + i) % SIZE;
-        cout << array[index] << "[" << index << "] ";
+        cout << Array[index] << "[" << index << "] ";
     }
     cout << "\n";
 }
@@ -618,12 +619,59 @@ bool searchNode(BstNode *root, int data)
 {
     return binsearchRecursive(root, data);
 }
+struct // lesser
+{
+    bool operator()(int a, int b)
+    {
+      return a < b;
+    }
+} customless;
+/*bool comp(int a, int b)*/
+int comp(int a, int b)
+{
+    return a < b;
+}
+
+//http://en.cppreference.com/w/cpp/algorithm/sort
+void sortArray(int a[])
+{
+   //Sorting an array
+   sort(a, a+SIZE); //sort array
+   std::array<int, SIZE -1> arr ; //convert array to template array
+   //Method 1: Sorting template array using greater
+   for (int i = 1; i < SIZE; i++)
+       arr[i-1] = a[i];
+    sort(arr.begin(), arr.end(), greater<int>()); //sort template
+    for (int a : arr)
+    {
+        cout << a << " ";
+    }
+    cout << '\n';
+    //Method 2: Sorting template array using custom
+    sort(arr.begin(), arr.end(), customless); //struct
+    sort(arr.begin(), arr.end(), comp);       //function thinking in C++ media
+    for (int a : arr)
+    {
+        cout << a << " ";
+    }
+    //Method 3: Sorting template array using lambda
+    cout << '\n';
+    // sort using a lambda expression
+    std::sort(arr.begin(), arr.end(), [](int a, int b) {
+        cout << "lambda compare " << a << " " << b << " " << endl;
+       return b < a;
+     });
+    for (int a : arr) {
+       std::cout << a << " ";
+    }
+    std::cout << '\n';
+}
 
 int main()
 {
     cout << "Factorial(4) " << factorial(4) << endl;
     cout << "Fibonacci(5) " << fibonacci(5) << endl;
-    cout <<  "***********Queue Array ***********" << endl;
+    cout <<  "***********Queue Arrayay ***********" << endl;
     enqueueArray(12);
     enqueueArray(4);
     enqueueArray(5);
@@ -676,13 +724,14 @@ int main()
     cout << (isBinarySearchTreeUpperLower(root, findMin(root), findMax(root)) ? "BST" : "Not BST") << endl;
 
     printArray();
-    //mergeSort(array, 0, 4);
-    //shellSort(array, 4);
-    //quickSort(array, 0, 4);
-    //bubbleSort(array, 4);
-    //insertSort(array, 4);
-    selectSort(array, 4);
+    //mergeSort(Array, 0, 4);
+    //shellSort(Array, 4);
+    //quickSort(Array, 0, 4);
+    //bubbleSort(Array, 4);
+    //insertSort(Array, 4);
+    //selectSort(Array, 4);
     printArray();
+    sortArray(Array);
 
 }
 
