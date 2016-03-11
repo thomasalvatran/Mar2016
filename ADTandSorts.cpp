@@ -26,6 +26,45 @@ void swap(int a[], int i, int j)
     a[j] = temp;
 }
 
+void merge(int a[], int l, int m, int r) {
+  int n = r - l + 1;
+  int t[n];
+  int i1 = l;
+  int i2 = m + 1;
+  int j = 0;
+  while (i1 <= m && i2 <= r) {
+    if (a[i1] < a[i2]) {
+      t[j] = a[i1];
+      i1++;
+    } else {
+      t[j] = a[i2];
+      i2++;
+    }
+    j++;
+  }
+  while (i1 <= m) {
+    t[j] = a[i1];
+    i1++;
+    j++;
+  }
+  while (i2 <= r) {
+    t[j] = a[i2];
+    i2++;
+    j++;
+  }
+  for (j = 0; j < n; j++)
+    a[l + j] = t[j];
+}
+
+void mergeSort(int a[], int l, int r) {
+  if (l >= r)
+    return;
+  int m = (r + l) / 2;
+  mergeSort(a, l, m);
+  mergeSort(a, m + 1, r);
+  merge(a, l, m, r);
+}
+
 void insertSort(int a[], int n)
 {
     int i, j, value;
