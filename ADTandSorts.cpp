@@ -93,15 +93,15 @@ void quickSort(int a[],  int l, int r)
 
 }
 
-void shellSort(int v[], int n)
+void shellSort(int a[], int n)
 {
     int gap, i, j, temp;
     for (gap = n/2; gap > 0; gap /= 2)
         for (i = gap; i < n; i++)
-            for (j = i - gap; j >= 0 && v[j] > v[j + gap]; j -= gap)
-            {
-                swap(v, j, j + gap);
-            }
+            for (j = i - gap; j >= 0 && a[j] > a[j + gap]; j -= gap)
+            // {
+                swap(a, j, j + gap);
+            // }
 }
 //http://geeksquiz.com/merge-sort/
 void merge(int a[], int l, int m, int r) {
@@ -253,6 +253,13 @@ void printLinkedList()
     cout << "\n";
 }
 
+void swapNode (Node *first, Node *second)
+{
+    int tmpValue = first->data;
+    first->data = second->data;
+    second->data = tmpValue;
+}
+
 /***********************Queue ADT Tree *****************************/
 struct BstNode
 {
@@ -373,7 +380,7 @@ BstNode* insertNode(BstNode *root, int data)
     }
     else if (data < root->data)
     {
-        while (temp->left->left != 0)  //???
+        while (temp->left != 0)  //???
             temp = temp->left;
         if (data < temp->data)
             temp->left = createNode(data);
@@ -382,7 +389,7 @@ BstNode* insertNode(BstNode *root, int data)
     }
     else if (data > root->data)
     {
-        while (temp->right->right != 0)
+        while (temp->right != 0)
         {
             temp = temp->right;
         }
@@ -676,7 +683,9 @@ int main()
     srand(time(0));
     for (int i = 0; i < 3; i++)
         a[i] = rand_int(1, 100);
-    insertSort(a, 4);
+    // insertSort(a, 4);
+    // print(a, 4);
+    mergeSort(a, 0, 3);
     print(a, 4);
     cout <<  "***********Queue Array ***********" << endl;
     enqueueArray(12);
@@ -687,11 +696,30 @@ int main()
     cout <<  "***********Queue Linked List ***********" << endl;
     enqueueLinkedList(22);
     enqueueLinkedList(23);
+    enqueueLinkedList(29);
+    enqueueLinkedList(124);
     enqueueLinkedList(24);
     printLinkedList();
     dequeueLinkedList();
     printLinkedList();
-
+    bool isSwapped;
+    Node *temp = NULL;
+    do 
+    {
+        temp = frontLL;
+        isSwapped = false;
+        while (temp->next != NULL)
+        {
+            if (temp->data > temp->next->data)
+            {
+                swapNode(temp, temp->next);
+                isSwapped = true;
+            }
+            temp = temp->next;
+        }
+    }while (isSwapped);
+    printLinkedList();
+    cout <<  "***********Queue Tree ***********" << endl;
     insertNodeGlobal(100); //Method 0: global no return
     insertNodeGlobal(90);
     insertNodeGlobal(110);
@@ -699,6 +727,7 @@ int main()
     insertNodeRef(&root, 177);
     root = insertNode(root, 88); //Method 2: normal
     root = insertNode(root, 880);
+    root = insertNode(root, 353);
     root = insertNodeRecursive(root, 99); //Method 3: recursive
     root = insertNodeRecursive(root, 999);
     root = enqueueTree(root, 55);
